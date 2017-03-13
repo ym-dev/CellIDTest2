@@ -8,6 +8,7 @@ import android.telephony.CellLocation;
 import android.telephony.PhoneStateListener;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
@@ -21,12 +22,13 @@ import static android.support.v7.appcompat.R.id.info;
 public class MainActivity extends AppCompatActivity {
 
     private TextView TV;
+    private EditText ET;
     private TelephonyManager TM;
     private List<NeighboringCellInfo> neighboringCellInfoList;
 
     private String str;
     private Button getCellsInfoBtn;
-    private Button getCellsInfoBtn2;
+//    private Button getCellsInfoBtn2;
     private List<CellInfo> cellInfoList;
     private PhoneStateListener PSL;
     private int event;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         TV = (TextView)findViewById(R.id.iv);
+        ET = (EditText)findViewById(R.id.editText);
         TM = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         PSL = new PhoneStateListener();
         event = PSL.LISTEN_CELL_INFO | PSL.LISTEN_CELL_LOCATION;
@@ -71,12 +74,15 @@ public class MainActivity extends AppCompatActivity {
                     {
                         if (cellInfo instanceof CellInfoLte)
                         {
-
+                            // cast to CellInfoLte and call all the CellInfoLte methods you need
                             CellInfoLte cellInfoLte = (CellInfoLte) cellInfo;
                             if (cellInfoLte != null) {
                                 int cellId = Integer.MAX_VALUE;
                                 cellId = cellInfoLte.getCellIdentity().getCi();
-                                TV.setText("Cell ID = " + cellId);
+                                int pcellId = Integer.MAX_VALUE;
+                                pcellId = cellInfoLte.getCellIdentity().getPci();
+                                ET.setText("Cell ID = " + cellId+"\nPhysical Cell Id= "+ pcellId);
+
                             }
                         }
                     }
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+/*
 
         //getNeighboringCellInfo
         getCellsInfoBtn2 = (Button)findViewById(R.id.getCellsInfoBtn2);
@@ -101,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+*/
     }
 }
 
